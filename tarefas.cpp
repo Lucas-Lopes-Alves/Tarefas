@@ -37,6 +37,8 @@ int main() {
         }
         else if (resposta == 2)
         {
+            //lê o conteudo do arquivo imprime e salva no vetor para mudar o conteudo
+            //e depois adiciona de volta no arquivo
             cout << "Que tarefa deseja remover(Digite a tarefa exatamente como aparece abaixo)" 
                         << '\n' << "---------------------------" << '\n';
             string tarefas;
