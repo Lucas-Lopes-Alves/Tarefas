@@ -3,6 +3,7 @@
 #include <string> //to get an entire line from cin
 #include <filesystem> //for std::filesystem::exists
 #include <vector>
+#include <algorithm>
 using std::string, std::cin, std::cout;
 
 int main() {   
@@ -43,30 +44,36 @@ int main() {
             int count{0};
             while (std::getline(file, tarefas))
             {
-                cout << count <<": "<< tarefas << '\n';
+                cout << count+1 <<": "<< tarefas << '\n';
                 linhas.push_back(tarefas);
                 count++;
             }
             cin.ignore();
             std::getline(cin, removido);
-            count = 0;
-            while (std::getline(file, tarefas))
-            {
-                if (tarefas == removido) {
-                    linhas.erase(linhas.begin() + count);
-                }
-                count++;
+
+            file.close();
+           auto it {std::find(linhas.begin(), linhas.end(), removido)};
+            if (it != linhas.end()) {
+                linhas.erase(it);
+            }
+
+            std::fstream file("/home/lucas/desktop/C/tarefas.txt", std::ios::out);
+            
+            for (std::string vetor : linhas) {
+                file << vetor << '\n';
             }
             
         }
         else if (resposta == 3)
         {
-            //imprime cada linha do arquivo
+            //imprime cada linha do arquivo com o numero da linha do lado
+            int count{};
             string conteudo;
             cout << "-------------------------------------------------------------------------------" << '\n' ;
             while (std::getline(file, conteudo))
             {
-                cout << conteudo << '\n';
+                cout << count+1 << ": " << conteudo << '\n';
+                count++;
             }
             cout << "-------------------------------------------------------------------------------" << '\n' ;
         }
