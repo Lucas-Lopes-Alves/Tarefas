@@ -4,16 +4,22 @@
 #include <filesystem> //for std::filesystem::exists
 using std::string, std::cin, std::cout;
 
-int main()
-{
-    std::ofstream file{"tarefas.txt"};
-    int resposta{};
-    std::string tarefa;
+int main() {   
+    int resposta {}; //variavel criada para salvar a resposta e definir o que fazer
+    std::string tarefa; //serve para pegar a tarefa a ser adicionada para colocar no arquivo
+    
 
-    while (true)
+    while (true) //cria o loop que permite usar constantemente
     {
-        std::fstream file("tarefas.txt", std::ios::in | std::ios::out | std::ios::app);
+        //verifica se o arquivo das tarefas existe
+        std::fstream file;
+        if (std::filesystem::exists("tarefas.txt")) {
+            file.open("tarefas.txt", std::ios::app);
+        } else {
+            file.open("tarefas.txt", std::ios::out | std::ios::app);
+        }
 
+        //pergunta o que o usúario deseja fazer e faz algo com base no número obtido
         std::cout << "O que deseja fazer?" << '\n'
                   << "Adicionar tarefa(1) | Remover tarefa (2) | Ver tarefas(3) |Sair(4)" << '\n';
         std::cin >> resposta;
@@ -26,7 +32,8 @@ int main()
         }
         else if (resposta == 2)
         {
-            std::cout << "que tarefa deseja remover(Digite a tarefa exatamente como aparece abaixo)" << '\n';
+            std::cout << "Que tarefa deseja remover(Digite a tarefa exatamente como aparece abaixo)" 
+                        << '\n' << "---------------------------" << '\n';
             for (std::string tarefas; std::getline(file, tarefas);)
             {
                 std::cout << tarefas << '\n';
@@ -42,6 +49,9 @@ int main()
         else if (resposta == 4)
         {
             break;
+        }
+        else {
+            cout << "Opção inválida" ;
         }
     }
     
