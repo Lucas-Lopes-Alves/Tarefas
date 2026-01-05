@@ -47,11 +47,11 @@ int main()
             {
                 // lê o conteudo do arquivo imprime e salva no vetor para mudar o conteudo
                 // e depois adiciona de volta no arquivo
-                cout << "Que tarefa deseja remover(Digite a tarefa exatamente como aparece abaixo)"
+                cout << "Que tarefa deseja remover(Digite o número da tarefa)"
                      << '\n'
                      << "---------------------------" << '\n';
                 string tarefas;
-                string removido;
+                int removido;
                 int count{0};
                 while (std::getline(file, tarefas))
                 {
@@ -60,14 +60,10 @@ int main()
                     count++;
                 }
                 cin.ignore();
-                std::getline(cin, removido);
+                cin >> removido;
 
                 file.close();
-                auto it{std::find(linhas.begin(), linhas.end(), removido)};
-                if (it != linhas.end())
-                {
-                    linhas.erase(it);
-                }
+                linhas.erase(linhas.begin()+(removido-1));
 
                 std::fstream file("/home/lucas/desktop/C/tarefas.txt", std::ios::out);
 
