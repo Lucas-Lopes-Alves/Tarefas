@@ -4,10 +4,26 @@
 #include <filesystem> //for std::filesystem::exists
 #include <vector>
 #include <algorithm>
+#include <cstdlib>
 using std::string, std::cin, std::cout;
 
 int main()
 {
+    //serve para sempre criar o arquivo na home do usúario atual
+    string endereco{};
+    const char* home = std::getenv("HOME");
+    if (!home) {
+        home = std::getenv("USERPROFILE");
+        endereco = string(home) + "/tarefas.txt";
+    }
+    
+    if(home){
+        endereco = string(home) + "/tarefas.txt" ;
+    } else {
+        cout << "ERRO!" ;
+        return 1;
+    }
+
     int resposta{}; // variavel criada para salvar a resposta e definir o que fazer
     string tarefa;  // serve para pegar a tarefa a ser adicionada para colocar no arquivo
     std::vector<string> linhas;
@@ -16,13 +32,13 @@ int main()
     {
         // verifica se o arquivo das tarefas existe
         std::fstream file;
-        if (std::filesystem::exists("/home/lucas/desktop/C/tarefas.txt"))
+        if (std::filesystem::exists(endereco))
         {
-            file.open("/home/lucas/desktop/C/tarefas.txt", std::ios::in | std::ios::app);
+            file.open(endereco, std::ios::in | std::ios::app);
         }
         else
         {
-            file.open("/home/lucas/desktop/C/tarefas.txt", std::ios::in | std::ios::out | std::ios::app);
+            file.open(endereco, std::ios::in | std::ios::out | std::ios::app);
         }
 
         // pergunta o que o usúario deseja fazer e faz algo com base no número obtido
@@ -65,12 +81,13 @@ int main()
                 file.close();
                 linhas.erase(linhas.begin()+(removido-1));
 
-                std::fstream file("/home/lucas/desktop/C/tarefas.txt", std::ios::out);
+                std::fstream file(endereco, std::ios::out);
 
                 for (std::string vetor : linhas)
                 {
                     file << vetor << '\n';
                 }
+                linhas.clear();
             }
             else if (pergunta == 2)
             {
@@ -92,12 +109,13 @@ int main()
                 linhas[resposta - 1] = substituto;
 
                 file.close();
-                std::fstream file("/home/lucas/desktop/C/tarefas.txt", std::ios::out);
+                std::fstream file(endereco, std::ios::out);
 
                 for (std::string vetor : linhas)
                 {
                     file << vetor << '\n';
                 }
+                linhas.clear();
             }
             else
             {
